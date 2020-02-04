@@ -1,7 +1,7 @@
 # simple_geocoder
 
 ## Overview
-simple_geocoder geocodes voterrolls at scale with a focus on scalability and throughput. In addition, simple_geocoder is apsirationally *simple* in the sense that every line of code is intended to be relavent and easy to understand. I hope that even if the scripts are not immediately useful, they will be simple enough to serve as a useful starting point for your project.
+simple_geocoder geocodes voterrolls at scale with a focus on throughput. In addition, simple_geocoder is apsirationally *simple* in the sense that every line of code is intended to be relavent and easy to understand. I hope that even if the scripts are not immediately useful, they will be simple enough to serve as a useful starting point for your project.
 
 simple_geocoder works in two distinct phases. 1) Clean data and upload it to a PostgreSQL database instance. 2) Pull rows that have not been geocoded, geocoding them, and update the corresponding row in the database. 
 
