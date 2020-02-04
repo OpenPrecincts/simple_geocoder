@@ -41,10 +41,9 @@ def gen_update_q(d):
 
 def geocode_batch(start_idx, batch_size=batch_size):
     try:
-        end_idx = start_idx + batch_size
         start_time = time.time()
+        end_idx = start_idx + batch_size
         batch_df = df_raw.iloc[start_idx:end_idx][:]
-        # Put batch through census API pooling is set to false because we are handling the pooling ourselves in this script
         result_dicts = censusbatchgeocoder.geocode(batch_df.to_dict('records'), pooling=False)
         update_query = ';'.join([gen_update_q(d) for d in result_dicts])
         curr.execute(update_query)
