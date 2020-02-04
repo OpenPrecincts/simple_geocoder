@@ -2,7 +2,6 @@ import concurrent
 import datetime
 import time
 import traceback
-import subprocess
 import sys
 import warnings
 from concurrent.futures import ThreadPoolExecutor
@@ -45,11 +44,8 @@ def geocode_batch(start_idx, batch_size=batch_size):
         end_idx = start_idx + batch_size
         start_time = time.time()
         batch_df = df_raw.iloc[start_idx:end_idx][:]
-        # create dummy csv to load batches into the census API wrapper
-        raw_filename = './raw_{}-{}.csv'.format(start_idx, end_idx)
-        batch_df.to_csv(raw_filename)
         # Put batch through census API pooling is set to false because we are handling the pooling ourselves in this script
-        result_dicts = censusbatchgeocoder.geocode(raw_filename, pooling=False)
+        result_dicts = censusbatchgeocoder.geocode(batch_df.to_dict('records'), pooling=False)
         update_query = ';'.join([gen_update_q(d) for d in result_dicts])
         curr.execute(update_query)
         print('thread finished for batch {} size: {} in {} seconds'.format((start_idx,end_idx), batch_size, time.time() - start_time))
@@ -121,8 +117,6 @@ try:
         myConnection.commit()
         seconds = time.time() - start
         print("Geocoded {} entries in {} seconds".format(n_coded, seconds))
-        print("Cleaning up temp files for this batch")
-        subprocess.call("./cleanup.sh", shell=True)
         db_chunk_idx += db_chunk_size
 except Exception as err:
     print("Exception while geocoding:  {}".format(err))
