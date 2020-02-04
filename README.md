@@ -7,7 +7,7 @@ simple_geocoder works in two distinct phases. 1) Clean data and upload it to a P
 
 ### Requirements
 - Python 3.7.4
-- The dependencies listed in requirements.txt
+- The dependencies listed in **requirements.txt**
 - Postresql Database instance (add the databse credentials to the **config.py** file in your working directory)
 
 I reccomend using a [virtual enviroment](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) to install dependencies for the Python scripts. It's pretty easy to setup and it will save you a lot of headache down the road. 
