@@ -6,8 +6,7 @@ simple_geocoder geocodes voterrolls at scale with a focus on throughput. In addi
 simple_geocoder works in two distinct phases. 1) Clean data and upload it to a PostgreSQL database instance. 2) Pull rows that have not been geocoded, geocoding them, and update the corresponding row in the database. 
 
 ### Requirements
-- 
-3.7.4
+- Python 3.7.4
 - The dependencies listed in **requirements.txt**
 - Postresql Database instance (add the databse credentials to the **config.py** file in your working directory)
 
