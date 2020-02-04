@@ -6,7 +6,7 @@ simple_geocoder geocodes voterrolls at scale with a focus on throughput. In addi
 simple_geocoder works in two distinct phases. 1) Clean data and upload it to a PostgreSQL database instance. 2) Pull rows that have not been geocoded, geocoding them, and update the corresponding row in the database. 
 
 ## Database 
-I used a PostgreSQL database instance hosted with Amazon's Relational Database Service (Amazon RDS). You can follow a tutorial on how to set one up [here](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/). Of course you could also run a [local database instance instead if you prefer.](https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb
+I used a PostgreSQL database instance hosted with Amazon's Relational Database Service (Amazon RDS). You can follow a tutorial on how to set one up [here](https://aws.amazon.com/getting-started/tutorials/create-connect-postgresql-db/). Of course you could also run a [local database instance instead if you prefer.](https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)
 
 These scripts rely on a single table named 'geo_tbl'. It has the following columns 'id', 'is_geocoded', 'voterbase_id', 'address', 'state', 'zipcode', 'vb_vf_precinct_id', 'vb_vf_precinct_name', 'vb_vf_national_precinct_code', 'voter_status', 'vf_reg_cd', 'vf_reg_hd', 'vf_reg_sd', 'geocoded_address', 'is_match', 'is_exact', 'returned_address', 'coordinates', 'tiger_line', 'side', 'state_fips', 'county_fips', 'tract', 'block', 'longitude', 'latitude'. Your schema is likely to vary based on the columns names of your voterroll. If your column names are different, be sure to adjust the python script accordingly.
 
