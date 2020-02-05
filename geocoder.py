@@ -12,6 +12,14 @@ import psycopg2
 
 import config
 
+# TODO: enter the table name for the database
+table = 'geo_tbl'
+thereExistRowToGeocode = True
+n_coded = 0
+db_chunk_idx = 0
+batch_size = 25
+db_chunk_size = 10000
+
 def gen_update_q(d):
     if d['is_match'] == 'Match':
         return "UPDATE {} SET is_geocoded = {}, geocoded_address = '{}', is_match = '{}', is_exact = '{}', returned_address = '{}', coordinates = '{}', tiger_line = {}, side= '{}', state_fips= '{}', county_fips= '{}', tract= '{}', block= '{}', longitude= '{}', latitude= '{}' WHERE id = {}".format(
@@ -44,7 +52,8 @@ def geocode_batch(start_idx, batch_size=batch_size):
         start_time = time.time()
         end_idx = start_idx + batch_size
         batch_df = df_raw.iloc[start_idx:end_idx][:]
-        result_dicts = censusbatchgeocoder.geocode(batch_df.to_dict('records'), pooling=False)
+        dict_lst = batch_df.to_dict('records')
+        result_dicts = censusbatchgeocoder.geocode(dict_lst, pooling=False)
         update_query = ';'.join([gen_update_q(d) for d in result_dicts])
         curr.execute(update_query)
         print('thread finished for batch {} size: {} in {} seconds'.format((start_idx,end_idx), batch_size, time.time() - start_time))
@@ -58,13 +67,7 @@ print("initiating DB connection...")
 myConnection = psycopg2.connect(host=config.db['hostname'], user=config.db['username'], password=config.db['password'], dbname=config.db['database'])
 curr = myConnection.cursor()
 print("connected... ")
-thereExistRowToGeocode = True
-n_coded = 0
-db_chunk_idx = 0
-batch_size = 25
-db_chunk_size = 10000
-enter the table name for the database
-table = 'geo_tbl'
+
 print("ENTERING MAIN LOOP -  db chunk size: {}".format(db_chunk_size))
 try:
     print("Starting the geocoding script - All states remaining")
@@ -79,7 +82,6 @@ try:
         if n_entries_chunk == 0:
             thereExistRowToGeocode = False
             break
-        df_raw = df_raw.set_index('id')
         df_raw['city'] = ''
 
         indices = [idx for idx in range(0, n_entries_chunk, batch_size)]
