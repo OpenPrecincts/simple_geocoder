@@ -22,7 +22,7 @@ db_chunk_size = 10000
 
 def gen_update_q(d):
     if d['is_match'] == 'Match':
-        return "UPDATE {} SET is_geocoded = {}, geocoded_address = '{}', is_match = '{}', is_exact = '{}', returned_address = '{}', coordinates = '{}', tiger_line = {}, side= '{}', state_fips= '{}', county_fips= '{}', tract= '{}', block= '{}', longitude= '{}', latitude= '{}' WHERE id = {}".format(
+        return "UPDATE {} SET is_geocoded = {}, geocoded_address = '{}', is_match = '{}', is_exact = '{}', returned_address = '{}', coordinates = '{}', tiger_line = {}, side= '{}', state_fips= {}, county_fips= {}, tract= '{}', block= '{}', longitude= '{}', latitude= '{}' WHERE id = {}".format(
                 table,
                 True, 
                 d.get('geocoded_address',''), 
@@ -32,8 +32,8 @@ def gen_update_q(d):
                 d.get('coordinates',''), 
                 d.get('tiger_line','NULL') if len(d['tiger_line']) > 0 else 'NULL',
                 d.get('side',''), 
-                d.get('state_fips',''),
-                d.get('county_fips',''),
+                d.get('state_fips','') if len(d['state_fips']) > 0 else 'NULL',
+                d.get('county_fips','') if len(d['county_fips']) > 0 else 'NULL',
                 d.get('tract',''),
                 d.get('block',''),
                 d.get('longitude',''), 
