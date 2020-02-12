@@ -29,7 +29,7 @@ curr = myConnection.cursor()
 print("connected... ")
 
 # TODO: enter the table name for the database
-table_name = 'geo_tbl'
+table_name = ''
 # TODO: enter the file path for the csv to be uploaded
 file_path = ''
 
@@ -39,7 +39,9 @@ batch_size = 10000
 with open(file_path) as f:
     n_entries = sum(1 for line in f)
 
-with open(relative_path) as csvfile:
+print("File path: ", file_path)
+n_entries_remaining = n_entries
+with open(file_path) as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     next(readCSV) 
     args_gen = (stringify(row) for row in readCSV if 'PRIVATE' not in row[1] and isZip(row[4]))
@@ -49,15 +51,21 @@ with open(relative_path) as csvfile:
         counter+=1
 
         #create the args_str for this batch
+        curr.execute("select count(*) from {}".format(table_name))
+        print("There are now: {} entries in {}".format(curr.fetchone(), table_name))
+
         isFirstRow = True
-        row_count = 1
-        while row_count < min(batch_size, n_entries):
-            row = next(args_gen)
+        row_count = 0
+        row = next(args_gen)
+        n_entries_this_batch = min(batch_size, n_entries_remaining)
+        print("n_entries_this_batch: ", n_entries_this_batch)
+        while row_count < n_entries_this_batch:
             if isFirstRow:
                 args_str = row
                 isFirstRow = False
             else:
                 args_str += ',{}'.format(row)
+            row = next(args_gen)
             row_count += 1
         
         # insert the rows contained in args_str into the database
@@ -73,9 +81,8 @@ with open(relative_path) as csvfile:
                 myfile.write(str(counter) + ",")
             
         myConnection.commit()
+        n_entries_remaining -= n_entries_this_batch
         print("Querry[",counter,"] executed in ", time.time()-start, " seconds")
-        else:
-            print("skipping idx: ", idx)
 
 print("retry set: ", retry_set)
 
