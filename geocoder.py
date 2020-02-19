@@ -12,8 +12,7 @@ import psycopg2
 
 import config
 
-# TODO: enter the table name for the database
-table = 'geo_tbl'
+table = input("Enter table name: ")
 thereExistRowToGeocode = True
 n_coded = 0
 db_chunk_idx = 0

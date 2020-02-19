@@ -29,9 +29,9 @@ curr = myConnection.cursor()
 print("connected... ")
 
 # TODO: enter the table name for the database
-table_name = ''
+table_name = input("Enter table name: ")
 # TODO: enter the file path for the csv to be uploaded
-file_path = ''
+file_path = input("Enter file path for the csv to be uploaded: ")
 
 retry_set = set()
 batch_size = 10000
