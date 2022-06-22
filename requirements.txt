@@ -10,7 +10,7 @@ idna==2.8
 isodate==0.6.0
 leather==0.3.3
 multidict==4.7.4
-numpy==1.18.1
+numpy==1.22.0
 pandas==1.0.0
 parsedatetime==2.5
 psycopg2==2.8.4
